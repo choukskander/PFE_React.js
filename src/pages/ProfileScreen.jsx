@@ -39,7 +39,7 @@ const ProfileScreen = () => {
             Authorization: `Bearer ${parsedUser.token}`,
           },
         };
-        const { data } = await axios.get('https://pfe-express-js-2.onrender.comapi/auth/profile', config);
+        const { data } = await axios.get('https://pfe-express-js-2.onrender.com/api/auth/profile', config);
         // Update state with the latest data from the database
         setUser(data);
         setNom(data.nom || '');
@@ -131,7 +131,7 @@ const ProfileScreen = () => {
       };
 
       const { data } = await axios.put(
-        'https://pfe-express-js-2.onrender.comapi/auth/profile',
+        'https://pfe-express-js-2.onrender.com/api/auth/profile',
         formData,
         config
       );

@@ -46,17 +46,17 @@ const AdminDashboard = () => {
       }
 
       try {
-        const usersResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/auth/users', {
+        const usersResponse = await axios.get('https://pfe-express-js-2.onrender.com/api/auth/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(Array.isArray(usersResponse.data) ? usersResponse.data : []);
 
-        const appointmentsResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/appointments', {
+        const appointmentsResponse = await axios.get('https://pfe-express-js-2.onrender.com/api/appointments', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAppointments(Array.isArray(appointmentsResponse.data) ? appointmentsResponse.data : []);
 
-        const forumsResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/forum', {
+        const forumsResponse = await axios.get('https://pfe-express-js-2.onrender.com/api/forum', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const forumsData = Array.isArray(forumsResponse.data) 
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
         setForums(forumsData);
 
         // Récupérer les notifications pour les admins
-        const notificationsResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/notifications/admin', {
+        const notificationsResponse = await axios.get('https://pfe-express-js-2.onrender.com/api/notifications/admin', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setNotifications(Array.isArray(notificationsResponse.data) ? notificationsResponse.data : []);
@@ -238,7 +238,7 @@ const AdminDashboard = () => {
   const handleDeleteUser = async (userId) => {
     const result = await Swal.fire({ title: 'Êtes-vous sûr ?', text: 'Irreversible !', icon: 'warning', showCancelButton: true, confirmButtonText: 'Oui', cancelButtonText: 'Annuler' });
     if (result.isConfirmed) {
-      await axios.delete(`https://pfe-express-js-2.onrender.comapi/auth/users/${userId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      await axios.delete(`https://pfe-express-js-2.onrender.com/api/auth/users/${userId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       setUsers(users.filter((user) => user._id !== userId));
       showNotification('Utilisateur supprimé');
     }
@@ -246,7 +246,7 @@ const AdminDashboard = () => {
 
   const handleValidateDoctor = async (userId) => {
     try {
-      const response = await axios.put(`https://pfe-express-js-2.onrender.comapi/auth/users/${userId}/validate`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      const response = await axios.put(`https://pfe-express-js-2.onrender.com/api/auth/users/${userId}/validate`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       setUsers(users.map((user) => user._id === userId ? { ...user, validated: true } : user));
       showNotification('Licence validée, email envoyé');
     } catch (err) {
@@ -257,7 +257,7 @@ const AdminDashboard = () => {
   const handleMarkNotificationAsRead = async (notificationId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`https://pfe-express-js-2.onrender.comapi/notifications/admin/${notificationId}/read`, {}, {
+      await axios.put(`https://pfe-express-js-2.onrender.com/api/notifications/admin/${notificationId}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotifications(notifications.map((notification) =>
@@ -315,7 +315,7 @@ const AdminDashboard = () => {
       validated: formData.get('status') === 'Actif',
     };
     try {
-      await axios.put(`https://pfe-express-js-2.onrender.comapi/auth/users/${updatedUser.id}`, updatedUser, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      await axios.put(`https://pfe-express-js-2.onrender.com/api/auth/users/${updatedUser.id}`, updatedUser, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       setUsers(users.map((user) => user._id === updatedUser.id ? { ...user, ...updatedUser } : user));
       setIsModalOpen(false);
       showNotification('Utilisateur mis à jour');
@@ -337,7 +337,7 @@ const AdminDashboard = () => {
     });
     if (result.isConfirmed) {
       try {
-        await axios.delete(`https://pfe-express-js-2.onrender.comapi/forum/${forumId}`, {
+        await axios.delete(`https://pfe-express-js-2.onrender.com/api/forum/${forumId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setForums(forums.filter((forum) => forum._id !== forumId));

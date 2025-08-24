@@ -14,7 +14,7 @@ const DiagnosticIA = () => {
   useEffect(() => {
     const fetchSymptoms = async () => {
       try {
-        const response = await axios.get(`https://pfe-express-js-2.onrender.comapi/symptoms/${lang}`);
+        const response = await axios.get(`https://pfe-express-js-2.onrender.com/api/symptoms/${lang}`);
         console.log('Symptômes reçus :', response.data);
         if (response.data.length === 0) {
           setError('Aucun symptôme disponible pour cette langue. Veuillez vérifier les données.');
@@ -31,7 +31,7 @@ const DiagnosticIA = () => {
 
   const handleDiagnose = async () => {
     try {
-      const response = await axios.post('https://pfe-express-js-2.onrender.comapi/diagnostic', {
+      const response = await axios.post('https://pfe-express-js-2.onrender.com/api/diagnostic', {
         symptoms: useTextInput ? null : selectedSymptoms,
         text: useTextInput ? text : null,
         lang

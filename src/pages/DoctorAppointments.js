@@ -51,7 +51,7 @@ const DoctorAppointments = () => {
     setError(null);
 
     try {
-      const response = await axios.get('https://pfe-express-js-2.onrender.comapi/appointments/doctor', {
+      const response = await axios.get('https://pfe-express-js-2.onrender.com/api/appointments/doctor', {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log('Réponse du backend (détails):', response.data);
@@ -105,7 +105,7 @@ const DoctorAppointments = () => {
 
     try {
       const response = await axios.put(
-        `https://pfe-express-js-2.onrender.comapi/appointments/${appointmentId}/status`,
+        `https://pfe-express-js-2.onrender.com/api/appointments/${appointmentId}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -152,7 +152,7 @@ const DoctorAppointments = () => {
     const token = localStorage.getItem('token');
     try {
       await axios.post(
-        `https://pfe-express-js-2.onrender.comapi/appointments/${appointment._id}/send-meeting-link`,
+        `https://pfe-express-js-2.onrender.com/api/appointments/${appointment._id}/send-meeting-link`,
         { roomName },
         { headers: { Authorization: `Bearer ${token}` } }
       );

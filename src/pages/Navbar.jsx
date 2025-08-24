@@ -45,7 +45,7 @@ const Navbar = () => {
       return;
     }
     try {
-      const response = await axios.get('https://pfe-express-js-2.onrender.comapi/notifications', {
+      const response = await axios.get('https://pfe-express-js-2.onrender.com/api/notifications', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotifications(response.data || []);
@@ -77,7 +77,7 @@ const Navbar = () => {
     const token = localStorage.getItem('token');
     try {
       await axios.put(
-        `https://pfe-express-js-2.onrender.comapi/notifications/${notificationId}/read`,
+        `https://pfe-express-js-2.onrender.com/api/notifications/${notificationId}/read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

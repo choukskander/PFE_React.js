@@ -66,7 +66,7 @@ function RegisterInternaute() {
       });
 
       const response = await axios.post(
-        "https://pfe-express-js-2.onrender.comapi/auth/register",
+        "https://pfe-express-js-2.onrender.com/api/auth/register",
         formData,
         {
           headers: {

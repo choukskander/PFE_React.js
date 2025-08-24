@@ -24,7 +24,7 @@ const ForumResponses = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        const response = await axios.get(`https://pfe-express-js-2.onrender.comapi/forum/responses/${forumId}`, {
+        const response = await axios.get(`https://pfe-express-js-2.onrender.com/api/forum/responses/${forumId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setResponses(response.data.data || []);

@@ -20,13 +20,13 @@ const ForumResponse = () => {
         const token = localStorage.getItem("token");
 
         // Récupérer les détails du forum
-        const forumResponse = await axios.get(`https://pfe-express-js-2.onrender.comapi/forum/${id}`, {
+        const forumResponse = await axios.get(`https://pfe-express-js-2.onrender.com/api/forum/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setForum(forumResponse.data.data);
 
         // Récupérer les réponses associées au forum
-        const responsesResponse = await axios.get(`https://pfe-express-js-2.onrender.comapi/forum/responses/${id}`, {
+        const responsesResponse = await axios.get(`https://pfe-express-js-2.onrender.com/api/forum/responses/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setResponses(responsesResponse.data.data || []);
@@ -47,7 +47,7 @@ const ForumResponse = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://pfe-express-js-2.onrender.comapi/forum/responses",
+        "https://pfe-express-js-2.onrender.com/api/forum/responses",
         { forumId: id, responses: responsesToSubmit },
         { headers: { Authorization: `Bearer ${token}` } }
       );

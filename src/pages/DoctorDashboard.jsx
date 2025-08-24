@@ -46,7 +46,7 @@ const DoctorDashboard = () => {
 
   const fetchAppointments = async (token) => {
     try {
-      const response = await axios.get('https://pfe-express-js-2.onrender.comapi/appointments/doctor', {
+      const response = await axios.get('https://pfe-express-js-2.onrender.com/api/appointments/doctor', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAppointments(response.data || []);
@@ -64,7 +64,7 @@ const DoctorDashboard = () => {
 
   const fetchHoraires = async (token, doctorId) => {
     try {
-      const response = await axios.get(`https://pfe-express-js-2.onrender.comapi/auth/schedule/${doctorId}`, {
+      const response = await axios.get(`https://pfe-express-js-2.onrender.com/api/auth/schedule/${doctorId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setHoraires(response.data.horaires || {});
@@ -123,7 +123,7 @@ const DoctorDashboard = () => {
   const fetchProfile = async (token) => {
     try {
       setIsProfileLoading(true);
-      const response = await axios.get('https://pfe-express-js-2.onrender.comapi/auth/profile', {
+      const response = await axios.get('https://pfe-express-js-2.onrender.com/api/auth/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log('Profil après fetch:', response.data);
@@ -231,7 +231,7 @@ const DoctorDashboard = () => {
 
     const token = localStorage.getItem('token');
     axios.post(
-      `https://pfe-express-js-2.onrender.comapi/appointments/${appointment._id}/send-meeting-link`,
+      `https://pfe-express-js-2.onrender.com/api/appointments/${appointment._id}/send-meeting-link`,
       { roomName },
       { headers: { Authorization: `Bearer ${token}` } }
     )
@@ -262,7 +262,7 @@ const DoctorDashboard = () => {
     if (!token) return;
     try {
       await axios.put(
-        `https://pfe-express-js-2.onrender.comapi/appointments/${appointmentId}/status`,
+        `https://pfe-express-js-2.onrender.com/api/appointments/${appointmentId}/status`,
         { status: 'cancelled' },
         { headers: { Authorization: `Bearer ${token}` } }
       );
