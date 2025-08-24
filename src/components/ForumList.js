@@ -13,7 +13,7 @@ const ForumList = () => {
     const fetchForums = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/forum", {
+        const response = await axios.get("https://pfe-express-js-2.onrender.comapi/forum", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setForums(response.data.data);

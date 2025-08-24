@@ -10,7 +10,7 @@ const DoctorSchedulePatient = () => {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/auth/schedule/${doctorId}`, {
+        const response = await axios.get(`https://pfe-express-js-2.onrender.comapi/auth/schedule/${doctorId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setHoraires(response.data.horaires);
@@ -28,7 +28,7 @@ const DoctorSchedulePatient = () => {
       if (!selectedDate) return;
 
       const response = await axios.post(
-        'http://localhost:5000/api/appointments/book',
+        'https://pfe-express-js-2.onrender.comapi/appointments/book',
         { doctorId, date: selectedDate, time, day },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

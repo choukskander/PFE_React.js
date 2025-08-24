@@ -43,19 +43,19 @@ const MedicalForumBuilder = () => {
         }
 
         // Fetch users data
-        const usersResponse = await axios.get("http://localhost:5000/api/auth/users", {
+        const usersResponse = await axios.get("https://pfe-express-js-2.onrender.comapi/auth/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(usersResponse.data);
 
         // Fetch appointments data
-        const appointmentsResponse = await axios.get("http://localhost:5000/api/appointments", {
+        const appointmentsResponse = await axios.get("https://pfe-express-js-2.onrender.comapi/appointments", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAppointments(appointmentsResponse.data);
 
         // Fetch forums data
-        const forumsResponse = await axios.get("http://localhost:5000/api/forum", {
+        const forumsResponse = await axios.get("https://pfe-express-js-2.onrender.comapi/forum", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setForums(forumsResponse.data);
@@ -177,7 +177,7 @@ const MedicalForumBuilder = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post("http://localhost:5000/api/forum", forumData, {
+      const response = await axios.post("https://pfe-express-js-2.onrender.comapi/forum", forumData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log('Forum created:', response.data); // Debug log

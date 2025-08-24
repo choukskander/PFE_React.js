@@ -9,7 +9,7 @@ import TwoFactorAuth from './TwoFactorAuth';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import pour harmoniser avec register
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"; // Icônes pour le password
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://pfe-express-js-2.onrender.com';
 
 const Login = () => {
   const [email, setEmail] = useState('');

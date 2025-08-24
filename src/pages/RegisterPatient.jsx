@@ -43,7 +43,7 @@ function RegisterPatient() {
     try {
       // Envoyer les données en JSON au lieu de FormData, car le backend attend du JSON
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://pfe-express-js-2.onrender.comapi/auth/register",
         {
           nom: data.nom,
           prenom: data.prenom,

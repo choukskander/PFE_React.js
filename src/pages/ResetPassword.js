@@ -6,7 +6,7 @@ import Lottie from 'lottie-react';
 import animationData from './Animation - 1742560736699.json'; // Assurez-vous d'importer la même animation que pour Login
 import Navbar from './Navbar'; // Importez votre Navbar
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://pfe-express-js-2.onrender.com';
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');

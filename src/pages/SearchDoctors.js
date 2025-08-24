@@ -10,7 +10,7 @@ import { fr } from 'date-fns/locale';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://pfe-express-js-2.onrender.com';
 
 // Configuration du localizer pour react-big-calendar avec date-fns
 const localizer = dateFnsLocalizer({

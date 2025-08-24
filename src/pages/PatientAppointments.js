@@ -49,7 +49,7 @@ const PatientAppointments = () => {
       setError(null);
 
       try {
-        const response = await axios.get('http://localhost:5000/api/appointments/patient', {
+        const response = await axios.get('https://pfe-express-js-2.onrender.comapi/appointments/patient', {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log('Réponse du backend:', response.data);
@@ -108,7 +108,7 @@ const PatientAppointments = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/appointments/cancel/${appointmentId}`,
+        `https://pfe-express-js-2.onrender.comapi/appointments/cancel/${appointmentId}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

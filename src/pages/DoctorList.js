@@ -9,7 +9,7 @@ const DoctorList = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/auth/search-doctors', {
+        const response = await axios.get('https://pfe-express-js-2.onrender.comapi/auth/search-doctors', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setDoctors(response.data);

@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import Chatbot from './Chatbot';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://pfe-express-js-2.onrender.com';
 
 const Home = () => {
   const navigate = useNavigate();

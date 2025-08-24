@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://pfe-express-js-2.onrender.com';
 
 const DoctorSchedule = () => {
   const navigate = useNavigate();

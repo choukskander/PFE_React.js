@@ -46,17 +46,17 @@ const AdminDashboard = () => {
       }
 
       try {
-        const usersResponse = await axios.get('http://localhost:5000/api/auth/users', {
+        const usersResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/auth/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(Array.isArray(usersResponse.data) ? usersResponse.data : []);
 
-        const appointmentsResponse = await axios.get('http://localhost:5000/api/appointments', {
+        const appointmentsResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/appointments', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAppointments(Array.isArray(appointmentsResponse.data) ? appointmentsResponse.data : []);
 
-        const forumsResponse = await axios.get('http://localhost:5000/api/forum', {
+        const forumsResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/forum', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const forumsData = Array.isArray(forumsResponse.data) 
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
         setForums(forumsData);
 
         // Récupérer les notifications pour les admins
-        const notificationsResponse = await axios.get('http://localhost:5000/api/notifications/admin', {
+        const notificationsResponse = await axios.get('https://pfe-express-js-2.onrender.comapi/notifications/admin', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setNotifications(Array.isArray(notificationsResponse.data) ? notificationsResponse.data : []);
@@ -238,7 +238,7 @@ const AdminDashboard = () => {
   const handleDeleteUser = async (userId) => {
     const result = await Swal.fire({ title: 'Êtes-vous sûr ?', text: 'Irreversible !', icon: 'warning', showCancelButton: true, confirmButtonText: 'Oui', cancelButtonText: 'Annuler' });
     if (result.isConfirmed) {
-      await axios.delete(`http://localhost:5000/api/auth/users/${userId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      await axios.delete(`https://pfe-express-js-2.onrender.comapi/auth/users/${userId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       setUsers(users.filter((user) => user._id !== userId));
       showNotification('Utilisateur supprimé');
     }
@@ -246,7 +246,7 @@ const AdminDashboard = () => {
 
   const handleValidateDoctor = async (userId) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/auth/users/${userId}/validate`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      const response = await axios.put(`https://pfe-express-js-2.onrender.comapi/auth/users/${userId}/validate`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       setUsers(users.map((user) => user._id === userId ? { ...user, validated: true } : user));
       showNotification('Licence validée, email envoyé');
     } catch (err) {
@@ -257,7 +257,7 @@ const AdminDashboard = () => {
   const handleMarkNotificationAsRead = async (notificationId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/notifications/admin/${notificationId}/read`, {}, {
+      await axios.put(`https://pfe-express-js-2.onrender.comapi/notifications/admin/${notificationId}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotifications(notifications.map((notification) =>
@@ -315,7 +315,7 @@ const AdminDashboard = () => {
       validated: formData.get('status') === 'Actif',
     };
     try {
-      await axios.put(`http://localhost:5000/api/auth/users/${updatedUser.id}`, updatedUser, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      await axios.put(`https://pfe-express-js-2.onrender.comapi/auth/users/${updatedUser.id}`, updatedUser, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       setUsers(users.map((user) => user._id === updatedUser.id ? { ...user, ...updatedUser } : user));
       setIsModalOpen(false);
       showNotification('Utilisateur mis à jour');
@@ -337,7 +337,7 @@ const AdminDashboard = () => {
     });
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:5000/api/forum/${forumId}`, {
+        await axios.delete(`https://pfe-express-js-2.onrender.comapi/forum/${forumId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setForums(forums.filter((forum) => forum._id !== forumId));
@@ -408,7 +408,7 @@ const AdminDashboard = () => {
                 <div className="table-responsive">
                   <Table striped bordered hover>
                     <thead><tr><th>Utilisateur</th><th>Email</th><th>Type</th><th>Statut</th><th>Actions</th></tr></thead>
-                    <tbody>{paginatedUsers.map((user) => <tr key={user.id}><td><div className="d-flex align-items-center"><img src={user.profileImage ? (isCloudinaryUrl(user.profileImage) ? user.profileImage : `http://localhost:5000/${user.profileImage.replace(/^\/+/, '')}`) : '/placeholder-profile-image.jpg'} alt={user.name} className="rounded-circle me-2" style={{ width: '40px', height: '40px', objectFit: 'cover' }} onError={(e) => (e.target.src = '/placeholder-profile-image.jpg')} /><span>{user.name}</span></div></td><td>{user.email}</td><td>{user.type}</td><td><Badge bg={user.status === 'Actif' ? 'success' : 'danger'}>{user.status}</Badge></td><td><Button variant="link" className="text-primary p-1" onClick={() => handleEditUser(user)}><i className="fas fa-edit"></i></Button><Button variant="link" className={user.status === 'Actif' ? 'text-warning p-1' : 'text-success p-1'} onClick={() => handleToggleStatus(user.id)}><i className={user.status === 'Actif' ? 'fas fa-ban' : 'fas fa-check'}></i></Button><Button variant="link" className="text-danger p-1" onClick={() => handleDeleteUser(user.id)}><i className="fas fa-trash"></i></Button></td></tr>)}</tbody>
+                    <tbody>{paginatedUsers.map((user) => <tr key={user.id}><td><div className="d-flex align-items-center"><img src={user.profileImage ? (isCloudinaryUrl(user.profileImage) ? user.profileImage : `https://pfe-express-js-2.onrender.com${user.profileImage.replace(/^\/+/, '')}`) : '/placeholder-profile-image.jpg'} alt={user.name} className="rounded-circle me-2" style={{ width: '40px', height: '40px', objectFit: 'cover' }} onError={(e) => (e.target.src = '/placeholder-profile-image.jpg')} /><span>{user.name}</span></div></td><td>{user.email}</td><td>{user.type}</td><td><Badge bg={user.status === 'Actif' ? 'success' : 'danger'}>{user.status}</Badge></td><td><Button variant="link" className="text-primary p-1" onClick={() => handleEditUser(user)}><i className="fas fa-edit"></i></Button><Button variant="link" className={user.status === 'Actif' ? 'text-warning p-1' : 'text-success p-1'} onClick={() => handleToggleStatus(user.id)}><i className={user.status === 'Actif' ? 'fas fa-ban' : 'fas fa-check'}></i></Button><Button variant="link" className="text-danger p-1" onClick={() => handleDeleteUser(user.id)}><i className="fas fa-trash"></i></Button></td></tr>)}</tbody>
                   </Table>
                 </div>
                 <div className="d-flex justify-content-between align-items-center border-top pt-3">
@@ -434,7 +434,7 @@ const AdminDashboard = () => {
                   </div>
                 </Card.Body>
               </Card>
-              {filteredMedecins.length === 0 ? <p className="text-center text-muted mt-3">Aucun médecin</p> : <Row>{filteredMedecins.map((user) => <Col md={4} key={user._id} className="mb-4"><Card className="shadow-sm h-100"><Card.Body><Card.Title className="d-flex justify-content-between align-items-center"><span>{user.nom} {user.prenom}</span><Badge bg={user.validated ? 'success' : 'warning'}>{user.validated ? 'Validé' : 'Non Validé'}</Badge></Card.Title><Card.Text><strong>Email:</strong> {user.email}</Card.Text><Card.Text><strong>Spécialité:</strong> {user.specialite || 'N/A'}</Card.Text><Card.Text><strong>Ville:</strong> {user.ville || 'N/A'}</Card.Text><Card.Text><strong>Localisation:</strong> {user.localisation || 'N/A'}</Card.Text><Card.Text><strong>Licence:</strong> {user.licenceProfessionnelle ? (isCloudinaryUrl(user.licenceProfessionnelle) ? <span className="text-danger bg-danger-subtle px-3 py-1 rounded-pill text-sm">Non accessible</span> : <a href={`http://localhost:5000${user.licenceProfessionnelle}`} target="_blank" rel="noopener noreferrer" className="text-white bg-primary px-3 py-1 rounded-pill text-sm">Voir</a>) : <span className="text-muted bg-light px-3 py-1 rounded-pill text-sm">Non fournie</span>}</Card.Text><div className="d-flex justify-content-between mt-3">{!user.validated && <Button variant="success" size="sm" onClick={() => handleValidateDoctor(user._id)}>Valider</Button>}<Button variant="danger" size="sm" onClick={() => handleDeleteUser(user._id)}>Supprimer</Button></div></Card.Body></Card></Col>)}</Row>}
+              {filteredMedecins.length === 0 ? <p className="text-center text-muted mt-3">Aucun médecin</p> : <Row>{filteredMedecins.map((user) => <Col md={4} key={user._id} className="mb-4"><Card className="shadow-sm h-100"><Card.Body><Card.Title className="d-flex justify-content-between align-items-center"><span>{user.nom} {user.prenom}</span><Badge bg={user.validated ? 'success' : 'warning'}>{user.validated ? 'Validé' : 'Non Validé'}</Badge></Card.Title><Card.Text><strong>Email:</strong> {user.email}</Card.Text><Card.Text><strong>Spécialité:</strong> {user.specialite || 'N/A'}</Card.Text><Card.Text><strong>Ville:</strong> {user.ville || 'N/A'}</Card.Text><Card.Text><strong>Localisation:</strong> {user.localisation || 'N/A'}</Card.Text><Card.Text><strong>Licence:</strong> {user.licenceProfessionnelle ? (isCloudinaryUrl(user.licenceProfessionnelle) ? <span className="text-danger bg-danger-subtle px-3 py-1 rounded-pill text-sm">Non accessible</span> : <a href={`https://pfe-express-js-2.onrender.com${user.licenceProfessionnelle}`} target="_blank" rel="noopener noreferrer" className="text-white bg-primary px-3 py-1 rounded-pill text-sm">Voir</a>) : <span className="text-muted bg-light px-3 py-1 rounded-pill text-sm">Non fournie</span>}</Card.Text><div className="d-flex justify-content-between mt-3">{!user.validated && <Button variant="success" size="sm" onClick={() => handleValidateDoctor(user._id)}>Valider</Button>}<Button variant="danger" size="sm" onClick={() => handleDeleteUser(user._id)}>Supprimer</Button></div></Card.Body></Card></Col>)}</Row>}
             </>
           )}
 
@@ -559,7 +559,7 @@ const AdminDashboard = () => {
             <Card.Header className="d-flex justify-content-between align-items-center"><h5>Modifier utilisateur</h5><Button variant="link" onClick={() => setIsModalOpen(false)}><i className="fas fa-times text-muted"></i></Button></Card.Header>
             <form onSubmit={handleSubmitEdit}>
               <Card.Body>
-                <div className="text-center mb-4"><div className="position-relative d-inline-block"><img src={currentUser.profileImage ? (isCloudinaryUrl(currentUser.profileImage) ? currentUser.profileImage : `http://localhost:5000/${currentUser.profileImage.replace(/^\/+/, '')}`) : '/placeholder-profile-image.jpg'} alt={currentUser.name} className="rounded-circle" style={{ width: '96px', height: '96px', objectFit: 'cover' }} onError={(e) => (e.target.src = '/placeholder-profile-image.jpg')} /><Button variant="primary" size="sm" className="position-absolute bottom-0 end-0 rounded-circle p-2"><i className="fas fa-camera"></i></Button></div></div>
+                <div className="text-center mb-4"><div className="position-relative d-inline-block"><img src={currentUser.profileImage ? (isCloudinaryUrl(currentUser.profileImage) ? currentUser.profileImage : `https://pfe-express-js-2.onrender.com${currentUser.profileImage.replace(/^\/+/, '')}`) : '/placeholder-profile-image.jpg'} alt={currentUser.name} className="rounded-circle" style={{ width: '96px', height: '96px', objectFit: 'cover' }} onError={(e) => (e.target.src = '/placeholder-profile-image.jpg')} /><Button variant="primary" size="sm" className="position-absolute bottom-0 end-0 rounded-circle p-2"><i className="fas fa-camera"></i></Button></div></div>
                 <div className="mb-3"><label className="form-label">Nom complet</label><input type="text" name="name" className="form-control" defaultValue={currentUser.name} /></div>
                 <div className="mb-3"><label className="form-label">Email</label><input type="email" name="email" className="form-control" defaultValue={currentUser.email} /></div>
                 <div className="mb-3"><label className="form-label">Type</label><select name="type" className="form-select" defaultValue={currentUser.type}><option value="Patient">Patient</option><option value="Médecin">Médecin</option><option value="Admin">Admin</option></select></div>
