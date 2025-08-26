@@ -1,9 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
-// import Navbar from "./Navbar"; 
+import { Link, useNavigate } from "react-router-dom";
+
 function Register() {
+  const navigate = useNavigate();
+
   return (
     <div>
+      <button
+        className="btn btn-outline-primary mb-3"
+        onClick={() => navigate(-1)}
+        style={{
+          position: "absolute",
+          top: 20,
+          left: 20,
+          zIndex: 1000,
+          background: "transparent",
+          border: "none",
+          boxShadow: "none"
+        }}
+        aria-label="Retour"
+      >
+        <span style={{ fontSize: "2rem", color: "#0d6efd" }}>&larr;</span>
+      </button>
       {/* <Navbar /> */}
       <main>
         <section>
