@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Ajout de l'import
 
 const DiagnosticIA = () => {
   const [lang, setLang] = useState('fr');
@@ -10,6 +11,7 @@ const DiagnosticIA = () => {
   const [text, setText] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Ajout du hook
 
   useEffect(() => {
     const fetchSymptoms = async () => {
@@ -65,7 +67,8 @@ const DiagnosticIA = () => {
       delete: 'Remove Selected Symptoms',
       reset: 'Clear All',
       diagnose: 'Get Diagnosis',
-      select_language: 'Choose Language'
+      select_language: 'Choose Language',
+      back: 'Back'
     },
     fr: {
       title: 'Diagnostic des Maladies | Système Expert',
@@ -74,7 +77,8 @@ const DiagnosticIA = () => {
       delete: 'Supprimer les symptômes sélectionnés',
       reset: 'Réinitialiser',
       diagnose: 'Diagnostiquer',
-      select_language: 'Choisir la langue'
+      select_language: 'Choisir la langue',
+      back: 'Retour'
     },
     ar: {
       title: 'تشخيص الأمراض | نظام خبير',
@@ -83,27 +87,45 @@ const DiagnosticIA = () => {
       delete: 'حذف الأعراض المختارة',
       reset: 'إعادة تعيين',
       diagnose: 'تشخيص',
-      select_language: 'اختر اللغة'
+      select_language: 'اختر اللغة',
+      back: 'رجوع'
     }
   };
 
   const languages = { en: 'English', fr: 'Français', ar: 'العربية' };
   const direction = lang === 'ar' ? 'rtl' : 'ltr';
 
-  return (
-    <div style={{ direction, textAlign: lang === 'ar' ? 'right' : 'left' }} className="container mt-5">
-      <h1>{translations[lang].title}</h1>
-      <div className="mb-3" style={{ position: 'absolute', top: '10px', [direction === 'rtl' ? 'left' : 'right']: '10px' }}>
-        <select
-          value={lang}
-          onChange={(e) => setLang(e.target.value)}
-          className="form-select w-auto"
+    return (
+      <div style={{ direction, textAlign: lang === 'ar' ? 'right' : 'left' }} className="container mt-5">
+        <button
+          className="btn btn-outline-primary mb-3"
+          onClick={() => navigate(-1)}
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 20,
+            zIndex: 1000,
+            background: 'transparent',
+            border: 'none',
+            boxShadow: 'none'
+          }}
+          aria-label={translations[lang].back}
         >
-          {Object.entries(languages).map(([code, name]) => (
-            <option key={code} value={code}>{name}</option>
-          ))}
-        </select>
-      </div>
+          <span style={{ fontSize: '2rem', color: '#0d6efd' }}>&larr;</span>
+        </button>
+        <h1>{translations[lang].title}</h1>
+        <div className="mb-3" style={{ position: 'absolute', top: '10px', [direction === 'rtl' ? 'left' : 'right']: '10px' }}>
+          <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+            className="form-select w-auto"
+          >
+            {Object.entries(languages).map(([code, name]) => (
+              <option key={code} value={code}>{name}</option>
+            ))}
+          </select>
+        </div>
+        
       <div className="row">
         {/* Left Column - Symptom Selection */}
         <div className="col-md-6">
