@@ -332,7 +332,7 @@ const Navbar = () => {
                   Espace Patient <i className="ri-arrow-down-s-line ml-1"></i>
                 </button>
                 <div className={`dropdown-content rounded-md mt-2 ${isPatientDropdownOpen ? 'open' : ''}`}>
-  {user && (user.role === 'patient' || user.role === 'medecin') && (
+  {user && (user.role === 'patient' || user.role === 'internaute') && (
     <Link
       to="/diagnostic-ia"
       onClick={handleLinkClick}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Ajout de l'import
+import { useNavigate } from 'react-router-dom';
 
 const DiagnosticIA = () => {
   const [lang, setLang] = useState('fr');
@@ -11,13 +11,12 @@ const DiagnosticIA = () => {
   const [text, setText] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Ajout du hook
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSymptoms = async () => {
       try {
         const response = await axios.get(`https://pfe-express-js-2.onrender.com/api/symptoms/${lang}`);
-        console.log('Symptômes reçus :', response.data);
         if (response.data.length === 0) {
           setError('Aucun symptôme disponible pour cette langue. Veuillez vérifier les données.');
         }
@@ -61,7 +60,7 @@ const DiagnosticIA = () => {
 
   const translations = {
     en: {
-      title: 'Disease Diagnosis Expert System',
+      title: 'Disease Diagnosis | Expert System',
       label: 'Select Your Symptoms',
       placeholder: 'Search for symptoms...',
       delete: 'Remove Selected Symptoms',
@@ -95,26 +94,19 @@ const DiagnosticIA = () => {
   const languages = { en: 'English', fr: 'Français', ar: 'العربية' };
   const direction = lang === 'ar' ? 'rtl' : 'ltr';
 
-    return (
-      <div style={{ direction, textAlign: lang === 'ar' ? 'right' : 'left' }} className="container mt-5">
+  return (
+    <div style={{ direction, textAlign: lang === 'ar' ? 'right' : 'left' }} className="container mt-4">
+
+      {/* ✅ Header avec Retour + Sélecteur de langue */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
         <button
-          className="btn btn-outline-primary mb-3"
+          className="btn btn-outline-primary"
           onClick={() => navigate(-1)}
-          style={{
-            position: 'absolute',
-            top: 20,
-            left: 20,
-            zIndex: 1000,
-            background: 'transparent',
-            border: 'none',
-            boxShadow: 'none'
-          }}
-          aria-label={translations[lang].back}
         >
-          <span style={{ fontSize: '2rem', color: '#0d6efd' }}>&larr;</span>
+          &larr; {translations[lang].back}
         </button>
-        <h1>{translations[lang].title}</h1>
-        <div className="mb-3" style={{ position: 'absolute', top: '10px', [direction === 'rtl' ? 'left' : 'right']: '10px' }}>
+
+        <div>
           <select
             value={lang}
             onChange={(e) => setLang(e.target.value)}
@@ -125,9 +117,13 @@ const DiagnosticIA = () => {
             ))}
           </select>
         </div>
-        
+      </div>
+
+      {/* ✅ Titre principal */}
+      <h1 className="mb-4">{translations[lang].title}</h1>
+
       <div className="row">
-        {/* Left Column - Symptom Selection */}
+        {/* Colonne gauche - Sélection des symptômes */}
         <div className="col-md-6">
           {useTextInput ? (
             <div className="mb-3">
@@ -179,7 +175,7 @@ const DiagnosticIA = () => {
           {error && <div className="alert alert-danger mt-3">{error}</div>}
         </div>
 
-        {/* Right Column - Diagnosis Result */}
+        {/* Colonne droite - Résultat du diagnostic */}
         <div className="col-md-6">
           <h2>
             {result && result.status === 'success'
