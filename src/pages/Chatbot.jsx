@@ -6,7 +6,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import './Chatbot.css';
 
 const Chatbot = () => {
-  const API_KEY = 'AIzaSyCJ9KkhMy8FKIBic-cSr8yFjmnGvt27p6I'; 
+
+  const API_KEY = 'AIzaSyCw0KBz426w72-jNGtlDo6q3Y-f6svfZZU';
 
   const [symptomInput, setSymptomInput] = useState('');
   const [responseData, setResponseData] = useState('');
@@ -15,7 +16,7 @@ const Chatbot = () => {
 
   const { Dragger } = Upload;
 
-  // Function to convert File object to GoogleGenerativeAI part
+  // Convertir une image en base64 pour Gemini
   const fileToGenerativePart = async (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -30,8 +31,8 @@ const Chatbot = () => {
     });
   };
 
-  // Main function to fetch diagnosis from Gemini API
-  const fetchDiagnosis = async (modelType = 'gemini-1.5-flash', imageParts = null) => {
+  // Fonction principale d'appel à l’API Gemini
+  const fetchDiagnosis = async (modelType = 'gemini-2.0-flash', imageParts = null) => {
     if (!symptomInput.trim() && !imageParts) {
       Swal.fire({
         icon: 'warning',
@@ -52,15 +53,13 @@ const Chatbot = () => {
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({ model: modelType });
 
-      let prompt = '';
-      if (imageParts) {
-        prompt = `Je suis un patient. Voici une image de mes symptômes (par exemple, une éruption cutanée ou une blessure). Quelle pourrait être la maladie probable ? Répondez en français et incluez un avertissement clair et visible que ceci ne remplace pas un diagnostic médical professionnel et que je dois consulter un médecin.`;
-      } else {
-        prompt = `Je suis un patient. J'ai les symptômes suivants : ${symptomInput}. Quelle pourrait être la maladie probable ? Répondez en français et incluez un avertissement clair et visible que ceci ne remplace pas un diagnostic médical professionnel et que je dois consulter un médecin.`;
-      }
+      const prompt = imageParts
+        ? `Je suis un patient. Voici une image de mes symptômes. Quelle pourrait être la maladie probable ? Répondez en français et précisez clairement que ceci n'est PAS un diagnostic médical et que je dois consulter un médecin.`
+        : `Je suis un patient. J'ai les symptômes suivants : ${symptomInput}. Quelle pourrait être la maladie probable ? Répondez en français et précisez clairement que ceci n'est PAS un diagnostic médical et que je dois consulter un médecin.`;
 
       const content = imageParts ? [prompt, ...imageParts] : prompt;
       const result = await model.generateContent(content);
+
       const text = result.response.text();
       setResponseData(text);
     } catch (error) {
@@ -68,26 +67,23 @@ const Chatbot = () => {
       Swal.fire({
         icon: 'error',
         title: 'Erreur API',
-        text: `Une erreur s’est produite lors de l’analyse. Veuillez vérifier votre clé API et l'accès au modèle (erreur: ${error.message || error}). Réessayez.`,
+        text: `Erreur lors de l’analyse. Vérifiez la clé API et le modèle. (${error.message || error})`,
         toast: true,
         position: 'top-end',
         timer: 5000,
         timerProgressBar: true,
       });
-      setResponseData('Une erreur est survenue lors de la communication avec l\'IA. Veuillez réessayer ou vérifier la configuration de votre clé API.');
+      setResponseData("⚠️ Une erreur est survenue lors de la communication avec Gemini.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleTextDiagnosis = () => {
-    fetchDiagnosis('gemini-1.5-flash', null);
-  };
-
+  const handleTextDiagnosis = () => fetchDiagnosis('gemini-2.0-flash');
   const handleVisionDiagnosis = async (file) => {
     setSymptomInput('');
     const imageParts = await fileToGenerativePart(file);
-    fetchDiagnosis('gemini-1.5-flash', [imageParts]);
+    fetchDiagnosis('gemini-2.0-flash', [imageParts]);
   };
 
   const openModal = () => {
@@ -106,39 +102,33 @@ const Chatbot = () => {
 
   return (
     <>
-      {/* Chatbot Icon */}
+      {/* Bouton Chatbot */}
       <div
         className="custumer_chatbot_icon_button"
         onClick={openModal}
-        aria-label="Ouvrir le chatbot pour un pré-diagnostic"
         role="button"
         tabIndex={0}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') openModal();
-        }}
+        onKeyPress={(e) => { if (e.key === 'Enter' || e.key === ' ') openModal(); }}
       >
-        <img
-          src="/chatbot-icon.png"
-          alt="Chatbot icon"
-          className="cusumer_img img-fluid"
-        />
+        <img src="/chatbot-icon.png" alt="Chatbot icon" className="cusumer_img img-fluid" />
       </div>
 
-      {/* Main Modal */}
+      {/* Fenêtre principale */}
       <Modal
         style={{ top: 20 }}
         open={modalVisible}
         title="Commencez vos questions médicales"
         onCancel={closeModal}
         footer={null}
-        destroyOnClose={true}
+        destroyOnClose
       >
         <div className="gemini-container">
           <p className="text-justify my-2">
-            <strong>Nous sommes là pour fournir des informations préliminaires...</strong>
+            <strong>⚠️ Attention : Ceci n’est pas un diagnostic médical. Consultez un médecin en cas de doute.</strong>
           </p>
+
           <div className="gemini-card">
-            {/* Image Upload (Dragger) */}
+            {/* Upload d'image */}
             <Dragger
               className="my-3"
               accept=".jpg,.jpeg,.png"
@@ -149,11 +139,11 @@ const Chatbot = () => {
                 const file = info.fileList[0]?.originFileObj;
                 if (file && file.size / 1024 / 1024 < 5) {
                   handleVisionDiagnosis(file);
-                } else if (file && file.size / 1024 / 1024 >= 5) {
+                } else if (file) {
                   Swal.fire({
                     icon: 'warning',
                     title: 'Fichier trop volumineux',
-                    text: 'Veuillez uploader une image de moins de 5 Mo.',
+                    text: 'Image max 5 Mo.',
                     toast: true,
                     position: 'top-end',
                     timer: 3000,
@@ -163,14 +153,12 @@ const Chatbot = () => {
               }}
               disabled={loading}
             >
-              <p className="ant-upload-drag-icon">
-                <UploadOutlined />
-              </p>
+              <p className="ant-upload-drag-icon"><UploadOutlined /></p>
               <p className="ant-upload-text">Cliquez ou glissez une image ici</p>
-              <p className="ant-upload-hint">Supporte .jpg, .jpeg, .png. Max 5MB.</p>
+              <p className="ant-upload-hint">Formats: .jpg, .jpeg, .png — Max 5MB</p>
             </Dragger>
 
-            {/* Text Input */}
+            {/* Saisie texte */}
             <Input
               className="text-input my-3"
               placeholder="Entrez vos symptômes (ex: fièvre, toux)"
@@ -180,7 +168,7 @@ const Chatbot = () => {
               disabled={loading}
             />
 
-            {/* Submit Button (for text input) */}
+            {/* Bouton analyse */}
             <div className="text-center">
               <Button
                 className="pro-button mt-3"
@@ -192,19 +180,15 @@ const Chatbot = () => {
               </Button>
             </div>
 
-            {/* AI Response Display */}
+            {/* Résultat */}
             <div className="response-container mt-4">
               {loading ? (
-                <div className="text-center">
-                  <Spin size="large" tip="Analyse en cours..." />
-                </div>
+                <div className="text-center"><Spin size="large" tip="Analyse en cours..." /></div>
               ) : (
                 responseData && (
                   <>
                     <p className="diagnosis-result">{responseData}</p>
-                    <p className="warning-text">
-                      ⚠️ Résultat IA, non médical. Prenez RDV avec nos médecins pour un diagnostic précis.
-                    </p>
+                    <p className="warning-text">⚠️ Ceci n’est pas un avis médical. Consultez un professionnel.</p>
                   </>
                 )
               )}
